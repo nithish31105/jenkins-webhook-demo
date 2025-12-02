@@ -1,28 +1,23 @@
 pipeline {
     agent any
 
-    environment {
-        TOMCAT_WEBAPPS = "C:\\apache-tomcat-9.0.108\\webapps"
-    }
-
     stages {
 
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/nithish31105/selab5', branch: 'main'
+                git branch: 'main', url: "https://github.com/nithish31105/jenkins-webhook.git"
             }
         }
 
-        stage('Build & Test') {
+        stage('Build') {
             steps {
-                bat "mvn clean install"
+                echo "Building the project…"
             }
         }
 
-        stage('Deploy') {
+        stage('Test') {
             steps {
-                echo "Deploying WAR to Tomcat..."
-                bat "copy target\\*.war \"${TOMCAT_WEBAPPS}\""
+                echo "Running tests..."
             }
         }
     }
@@ -30,17 +25,16 @@ pipeline {
     post {
         success {
             emailext(
-                subject: "SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}",
-                body: "Build SUCCESS.\nJob: ${JOB_NAME}\nBuild: ${BUILD_NUMBER}\nWAR dedvxvloyed to Tomcat.",
-                to: "nithishthallada8217@gmail.com"
+                to: "youremail@gmail.com",
+                subject: "BUILD SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The build succeeded."
             )
         }
-
         failure {
             emailext(
-                subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}",
-                body: "Build FAILED.\nJob: ${JOB_NAME}\nBuild: ${BUILD_NUMBER}\nCheck Jenkins console output.",
-                to: "nithishthallada8217@gmail.com"
+                to: "youremail@gmail.com",
+                subject: "BUILD FAILED - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The build failed. Please check Jenkins console output."
             )
         }
     }
