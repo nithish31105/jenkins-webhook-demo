@@ -31,7 +31,7 @@ pipeline {
         success {
             emailext(
                 subject: "SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}",
-                body: "Build SUCCESS.\nJob: ${JOB_NAME}\nBuild: ${BUILD_NUMBER}\nWAR deployed to Tomcat.",
+                body: "Build SUCCESS.\nJob: ${JOB_NAME}\nBuild: ${BUILD_NUMBER}\nWAR dedvxvloyed to Tomcat.",
                 to: "nithishthallada8217@gmail.com"
             )
         }
